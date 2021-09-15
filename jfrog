@@ -1,0 +1,24 @@
+ stage('jfrog'){
+		when {
+    expression { 
+        params.action == 'apply'
+        
+    }
+}
+            
+            steps{
+                script{
+                    def SERVER_ID = 'artifactory'
+                    def server = Artifactory.server SERVER_ID
+                    
+                    def uploadSpec = """{
+                        "files": [{
+                                    "pattern": "**/*.war",
+                                    "target": "example-repo-local"
+                        }]
+                    }"""
+                    
+                    server.upload(uploadSpec)
+                }
+            }
+        }//stage jfrog
